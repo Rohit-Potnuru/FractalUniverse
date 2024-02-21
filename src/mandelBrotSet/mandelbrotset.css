@@ -1,0 +1,21 @@
+.ConvexHullView {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    margin-top: 15px;
+}
+
+.convexHullWebGl{
+    border: 1px solid black;
+    background-color: black;
+}
+
+.convexHullInputs {
+    display: flex;
+    margin-top: 10px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-right: 15px;
+}
