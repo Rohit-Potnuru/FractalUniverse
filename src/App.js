@@ -1,20 +1,26 @@
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import './App.css';
-import NewtonFractalView from "./newtonFractal/NewtonFractal";
-import NewtonFractal from "./newtonFractal/nf";
-import NewtonFractal2 from './newtonFractal/nf2';
-import NewtonFractal3 from './newtonFractal/nf3';
-import Fractal from './newtonFractal/nfzoom';
+import Layout from './Layout';
+import ROUTE_FRACTAL_UNIVERSE from './RouteFractalUniverse';
+import FractalUniverse from './FractalUniverse';
 
 function App() {
   return (
-    <div className="App">
-      
-      <NewtonFractalView></NewtonFractalView>
-      {/* <NewtonFractal></NewtonFractal>
-      <NewtonFractal3></NewtonFractal3> */}
-      <NewtonFractal2></NewtonFractal2>
-      {/* <Fractal></Fractal> */}
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/fractalUniverse" element={<Layout />}>
+          <Route index element={<FractalUniverse />} />
+          {Object.keys(ROUTE_FRACTAL_UNIVERSE).map((key) => (
+            <Route 
+              key={key} 
+              path={key} 
+              element={ROUTE_FRACTAL_UNIVERSE[key]["component"]} 
+            />
+          ))}
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 

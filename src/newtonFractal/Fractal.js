@@ -15,13 +15,98 @@ export default class Fractal {
         this.options = {...options};
     }
 
-    drawFractal(ctx, canvas) {
+    computeFractal(width, 
+                   height, 
+                   convertToFractalSpace = (x) => {return x}, 
+                   basinOfAttraction = true) {
+        // Newton's method
+        let newtonFractalMatrix = new Array(width);
+        const maxIter = 100;
+
+        let zoom = 200;
+        convertToFractalSpace = (x) => {return [(x[0] - width / 2) / (zoom), (x[1] - height / 2) / (zoom)]}
+
+        for (let x = 0; x < width; x++) {
+            newtonFractalMatrix[x] = new Array(height);
+            for (let y = 0; y < height; y++) {
+                let [zx, zy] = convertToFractalSpace([x, y]);
+                // let zx = (x - width / 2) / (zoom);
+                // let zy = (y - height / 2) / (zoom);
+                
+                if(basinOfAttraction) {
+                    const [rootIndex, iteration] = this.polynomial.closestRootUsingNewtonMethod([zx, zy], maxIter)
+                    newtonFractalMatrix[x][y] = [iteration, rootIndex];
+                }
+                else {
+                    const [rootPoint, iteration] = this.polynomial.findRootUsingNewtonMethod([zx, zy], maxIter)
+                    newtonFractalMatrix[x][y] = [iteration];
+                }
+                // const color = `hsl(${iteration / maxIter * 360}, 100%, 50%)`;
+                // ctx.fillStyle = color;
+                // ctx.fillRect(x, y, 1, 1);
+            }
+        }
+
+        this.newtonFractalMatrix = newtonFractalMatrix;
+        this.maxIteration = maxIter;
+    }
+
+    renderBasinOfAttraction(ctx, canvas, pointsColor) {
+        console.time('renderBasinOfAttraction');
+        const width = canvas.width;
+        const height = canvas.height;
+
+        if(this.newtonFractalMatrix == null) {
+            this.computeFractal(width, height);
+        }
+
+        const imageData = ctx.getImageData(0, 0, width, height);
+        const data = imageData.data;
+        // Newton's method
+        for (let x = 0; x < width; x++) {
+          for (let y = 0; y < height; y++) {
+            const [r, g, b, a] = pointsColor[this.newtonFractalMatrix[x][y][1]];
+            const pixelIndex = (y * width + x) * 4;
+            data[pixelIndex] = r;     // Red
+            data[pixelIndex + 1] = g; // Green
+            data[pixelIndex + 2] = b; // Blue
+            data[pixelIndex + 3] = a; // Alpha
+          }
+        }
+        console.timeEnd('renderBasinOfAttraction');
+        ctx.putImageData(imageData, 0, 0);
+    };
+
+    renderIterationNewtonFractal(ctx, canvas) {
+        console.time('renderIterationNewtonFractal');
+        const width = canvas.width;
+        const height = canvas.height;
+
+        if(this.newtonFractalMatrix == null) {
+            this.computeFractal(width, height);
+        }
+
+        // Newton's method
+        for (let x = 0; x < width; x++) {
+          for (let y = 0; y < height; y++) {
+            let iteration = this.newtonFractalMatrix[x][y][0];
+            let maxIter = this.maxIteration;
+
+            const color = `hsl(${iteration / maxIter * 360}, 100%, 50%)`;
+            ctx.fillStyle = color;
+            ctx.fillRect(x, y, 1, 1);
+          }
+        }
+        console.timeEnd('renderIterationNewtonFractal');
+    };
+
+    renderFractal(ctx, canvas) {
         console.time('drawFractal');
         const width = canvas.width;
         const height = canvas.height
         const imageData = ctx.getImageData(0, 0, width, height);
         const data = imageData.data;
-        const zoom = 2000;
+        const zoom = 200;
         // Newton's method
         for (let x = 0; x < width; x++) {
           for (let y = 0; y < height; y++) {
