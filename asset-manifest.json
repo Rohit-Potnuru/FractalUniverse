@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/FractalUniverse/static/css/main.69e662c0.css",
-    "main.js": "/FractalUniverse/static/js/main.c0538e88.js",
+    "main.css": "/FractalUniverse/static/css/main.15c12200.css",
+    "main.js": "/FractalUniverse/static/js/main.192054fa.js",
     "index.html": "/FractalUniverse/index.html",
-    "main.69e662c0.css.map": "/FractalUniverse/static/css/main.69e662c0.css.map",
-    "main.c0538e88.js.map": "/FractalUniverse/static/js/main.c0538e88.js.map"
+    "main.15c12200.css.map": "/FractalUniverse/static/css/main.15c12200.css.map",
+    "main.192054fa.js.map": "/FractalUniverse/static/js/main.192054fa.js.map"
   },
   "entrypoints": [
-    "static/css/main.69e662c0.css",
-    "static/js/main.c0538e88.js"
+    "static/css/main.15c12200.css",
+    "static/js/main.192054fa.js"
   ]
 }
